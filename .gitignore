@@ -1,0 +1,15 @@
+# Secrets
+.env
+code/.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local run artifacts (sample predictions, score reports, caches)
+runs/
+code.zip
+agent-trace/
+agent-trace.zip
