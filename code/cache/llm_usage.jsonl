@@ -1,0 +1,14 @@
+{"at": "2026-10-24T19:59:39Z", "purpose": "image_extraction:evidence_04", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 2443, "output_tokens": 1238, "seconds": 3.89}
+{"at": "2026-10-24T20:01:34Z", "purpose": "image_extraction:evidence_04", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 777, "seconds": 5.63}
+{"at": "2026-10-24T20:02:45Z", "purpose": "image_extraction:evidence_09", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 619, "seconds": 56.23}
+{"at": "2026-10-24T20:04:01Z", "purpose": "image_extraction:evidence_14", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 856, "seconds": 75.91}
+{"at": "2026-10-24T20:05:04Z", "purpose": "image_extraction:evidence_19", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 624, "seconds": 63.13}
+{"at": "2026-10-24T20:06:08Z", "purpose": "image_extraction:evidence_23", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 939, "seconds": 63.43}
+{"at": "2026-10-24T20:07:10Z", "purpose": "image_extraction:evidence_28", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 471, "seconds": 62.43}
+{"at": "2026-10-24T20:08:14Z", "purpose": "image_extraction:evidence_32", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 872, "seconds": 63.29}
+{"at": "2026-10-24T20:10:17Z", "purpose": "image_extraction:evidence_37", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 1125, "seconds": 123.27}
+{"at": "2026-10-24T20:12:20Z", "purpose": "image_extraction:evidence_42", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 417, "seconds": 122.33}
+{"at": "2026-10-24T20:13:23Z", "purpose": "image_extraction:evidence_46", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 1161, "seconds": 63.41}
+{"at": "2026-10-24T20:14:25Z", "purpose": "image_extraction:evidence_60", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 509, "seconds": 62.24}
+{"at": "2026-10-24T20:15:33Z", "purpose": "image_extraction:evidence_28", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 471, "seconds": 18.39}
+{"at": "2026-10-24T20:16:37Z", "purpose": "image_extraction:evidence_32", "provider": "groq", "model": "qwen/qwen3.8-27b", "input_tokens": 6188, "output_tokens": 872, "seconds": 63.67}

@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 from ..dataset import Dataset, EvidenceFile
-from .catalog_links import catalog_link_observations
+from .catalog_links import catalog_aliases, catalog_link_observations
 from .documents import parse_pdf
 from .images import load_cache, parse_image
 from .logs import parse_log
@@ -63,6 +63,9 @@ def _kind(evidence: EvidenceFile) -> str:
 def load_evidence(dataset: Dataset) -> EvidenceStore:
     observations, coverage, texts, summaries = [], [], {}, []
     image_cache = load_cache()
+    aliases = catalog_aliases(dataset)
+    known_emails = {u.email.lower() for u in dataset.identities}
+    known_emails |= {a.old_value.lower() for a in dataset.audit_log if a.field_name == "email"}
     for evidence in sorted(dataset.evidence_files, key=lambda e: e.file_id):
         kind = _kind(evidence)
         if not evidence.path.exists():
@@ -78,9 +81,9 @@ def load_evidence(dataset: Dataset) -> EvidenceStore:
         elif kind == "log":
             obs, cov, problems = parse_log(evidence)
         elif kind == "pdf":
-            obs, cov, problems, text = parse_pdf(evidence)
+            obs, cov, problems, text = parse_pdf(evidence, aliases)
         elif kind == "png":
-            obs, cov, problems = parse_image(evidence, image_cache)
+            obs, cov, problems = parse_image(evidence, image_cache, aliases, known_emails)
         else:
             obs, cov, problems = [], [], [f"{evidence.file_id}: unsupported file type {kind!r}"]
         for item in (*obs, *cov):

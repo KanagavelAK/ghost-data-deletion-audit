@@ -72,6 +72,11 @@ class Policy:
         category = self.category_for(state, activities)
         presence, condition = state.presence, state.condition
 
+        # "No active sync or restore path" must be proven: a present flow or backup with no visible
+        # state is treated as still able to recreate data.
+        if presence == PRESENT and condition is None and category in ("DATA_FLOW", "BACKUP_ARCHIVE"):
+            condition = ACTIVE if category == "DATA_FLOW" else RESTORABLE
+
         if category == "DATA_FLOW":
             if presence == PRESENT and condition == ACTIVE:
                 return Assessment(state, category, "DISABLE_FLOW", False, "REPORT_ACTIVE_DATA_FLOW", "DISABLE_DATA_FLOW", "VERIFY_DATA_FLOW_DISABLED", "active flow can recreate data")

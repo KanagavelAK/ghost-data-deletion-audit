@@ -13,6 +13,23 @@ from ..dataset import Dataset
 from .model import UNKNOWN, Observation, default_category, emails_in_text, system_for, token
 
 USER_IN_TEXT = re.compile(r"\buser_\d+\b")
+ALIAS_RE = re.compile(r"\b(?:linked|confirmed)\s+([a-z_]+_\d+)\s+\(([^)]+)\)")
+
+
+def catalog_aliases(dataset: Dataset) -> dict[str, str]:
+    """Display reference (lower-case) -> resource id, e.g. 'delivery_confirmation_19.pdf' -> object_19.
+
+    Catalog rows read "linked tombstone_17 (user_17) to ...": the parenthesised value is how
+    the record is shown in consoles and documents.
+    """
+    aliases = {}
+    for a in dataset.activities:
+        if a.event_type != "LINK_RESOURCE_IDENTITY" or a.reported_result != "SUCCESS":
+            continue
+        match = ALIAS_RE.search(a.details)
+        if match and match.group(1) == a.resource_id and match.group(2) != a.resource_id:
+            aliases[match.group(2).strip().lower()] = a.resource_id
+    return aliases
 
 
 def catalog_link_observations(dataset: Dataset) -> list[Observation]:

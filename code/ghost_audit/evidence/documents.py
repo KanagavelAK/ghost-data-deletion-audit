@@ -10,7 +10,7 @@ import shutil
 import subprocess
 
 from ..dataset import EvidenceFile
-from .model import IDENTIFIABLE, KIND_TO_PII, PRESENT, RESOURCE_RE, Coverage, Observation, default_category, emails_in_text, system_for, token
+from .model import IDENTIFIABLE, KIND_TO_PII, PRESENT, RESOURCE_RE, Coverage, Observation, classify_token, default_category, emails_in_text, system_for, token
 
 USER_IN_TEXT = re.compile(r"\buser_\d+\b")
 PHONE_IN_TEXT = re.compile(r"\+\d[\d ()-]{7,}\d")
@@ -35,7 +35,8 @@ def text_identifiers(text: str) -> set[str]:
     return ids
 
 
-def parse_pdf(evidence: EvidenceFile) -> tuple[list[Observation], list[Coverage], list[str], str]:
+def parse_pdf(evidence: EvidenceFile, aliases: dict[str, str] | None = None) -> tuple[list[Observation], list[Coverage], list[str], str]:
+    """aliases: catalog display references (lower-case) -> resource id, e.g. a statement number."""
     try:
         text = pdf_text(evidence.path)
     except Exception as exc:  # noqa: BLE001 - report and continue with other evidence
@@ -43,8 +44,14 @@ def parse_pdf(evidence: EvidenceFile) -> tuple[list[Observation], list[Coverage]
     identifiers = text_identifiers(text)
     direct = {t for t in identifiers if not t.startswith("user:")}
     lowered = text.lower()
+    named = {m.group(0) for m in RESOURCE_RE.finditer(text)}
+    # Only record-specific references (statement numbers, file names), matched as whole words; a
+    # customer key such as user_17 names a person, so a register listing many users must not match it.
+    for alias, resource_id in (aliases or {}).items():
+        if classify_token(alias) is None and re.search(rf"(?<![\w.-]){re.escape(alias)}(?![\w-])", lowered):
+            named.add(resource_id)
     observations = []
-    for resource_id in sorted({m.group(0) for m in RESOURCE_RE.finditer(text)}):
+    for resource_id in sorted(named):
         category = default_category(resource_id)
         if resource_id.startswith("support_"):
             category = "SUPPORT_ATTACHMENT" if "attachment" in lowered else "SUPPORT_MESSAGE"

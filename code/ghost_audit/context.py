@@ -23,6 +23,27 @@ from .intent import Intent
 REFERENCE_ATTRIBUTES = ("source_resource_id",)
 
 
+def edit_distance(a: str, b: str) -> int:
+    previous = list(range(len(b) + 1))
+    for i, ca in enumerate(a, start=1):
+        current = [i]
+        for j, cb in enumerate(b, start=1):
+            current.append(min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (ca != cb)))
+        previous = current
+    return previous[-1]
+
+
+def near_match(token_a: str, token_b: str, tolerance: int = 2) -> bool:
+    """Same kind of identifier and at most `tolerance` characters apart (exact for user ids)."""
+    kind_a, _, value_a = token_a.partition(":")
+    kind_b, _, value_b = token_b.partition(":")
+    if kind_a != kind_b:
+        return False
+    if kind_a == "user":
+        return value_a == value_b
+    return value_a == value_b or (abs(len(value_a) - len(value_b)) <= tolerance and edit_distance(value_a, value_b) <= tolerance)
+
+
 @dataclass
 class ResourceLink:
     resource_id: str
@@ -44,6 +65,7 @@ class CaseContext:
     intake_non_deletion: list[Activity]  # privacy-intake activities classifying a linked account as non-deletion
     window_start: datetime | None = None  # audit_at of the same person's previous request, if any
     earlier_only: set[str] = field(default_factory=set)  # linked only before window_start (diagnostic)
+    conflicting: set[str] = field(default_factory=set)  # catalog-linked records whose content names someone else
 
     def resources(self, system_id: str | None = None) -> list[str]:
         return sorted(r for r, link in self.links.items() if system_id is None or link.system_id == system_id)
@@ -113,6 +135,23 @@ class ContextBuilder:
                 link = links.setdefault(other, ResourceLink(other, system_id))
                 link.via.add(f"ref:{resource_id}")
 
+        # A data-catalog link is metadata; if the record's own content names someone else, the content wins.
+        conflicts = set()
+        for resource_id, link in list(links.items()):
+            if not link.files or not all(f.startswith("activity_") for f in link.files):
+                continue
+            shown = {
+                t
+                for obs in self.store.history(resource_id, audit_at)
+                if not obs.source.startswith("activity:")
+                for t in obs.identifiers
+                if t.startswith(("email:", "phone:", "user:"))
+            }
+            # A one- or two-character difference is a transcription slip, not a different person.
+            if shown and not any(near_match(t, mine) for t in shown for mine in tokens):
+                conflicts.add(resource_id)
+                del links[resource_id]
+
         history = {r: self.store.history(r, audit_at) for r in links}
         activities = {r: [a for a in self.activities_by_resource.get(r, ()) if a.event_time <= audit_at] for r in links}
         intake = [
@@ -133,6 +172,7 @@ class ContextBuilder:
             intake_non_deletion=intake,
             window_start=window_start,
             earlier_only=earlier - set(links),
+            conflicting=conflicts,
         )
 
     def _system_from_activity(self, resource_id: str) -> str:

@@ -1,6 +1,6 @@
-"""Cross-check the rule-based intent decisions with Claude on every unique request text.
+"""Cross-check the rule-based intent decisions with the configured LLM on every unique request text.
 
-    python code/verify_intent.py      # needs ANTHROPIC_API_KEY; verdicts are cached in code/cache/intent_llm.json
+    python code/verify_intent.py      # needs GROQ_API_KEY (or another provider); verdicts are cached in code/cache/intent_llm.json
 
 Writes runs/intent_crosscheck.md listing every disagreement between rules and the LLM.
 """
@@ -21,7 +21,7 @@ def main() -> int:
     classifier = IntentClassifier()
     llm = classifier.llm_judgements(texts)
     if not llm:
-        print("no LLM verdicts available (set ANTHROPIC_API_KEY in .env)")
+        print("no LLM verdicts available (set GROQ_API_KEY in .env, or GHOST_LLM_PROVIDER and its key)")
         return 2
 
     rows, agree = [], 0

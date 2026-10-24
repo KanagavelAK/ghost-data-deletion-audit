@@ -1,0 +1,1172 @@
+{
+  "evidence_04": {
+    "extracted_at": "2026-10-24T20:01:34Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "haruka.s1838@zoho.com"
+        ],
+        "names": [
+          "Haruka Sato"
+        ],
+        "phones": [
+          "+81 90 7610 2507"
+        ],
+        "resource_ids": [
+          "account_5762",
+          "support_9538"
+        ],
+        "user_ids": [
+          "user_11"
+        ]
+      },
+      "records": [
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "haruka.s1838@zoho.com"
+          ],
+          "names": [
+            "Haruka Sato"
+          ],
+          "phones": [
+            "+81 90 7610 2507"
+          ],
+          "presence": "PRESENT",
+          "record_type": "USER_PROFILE",
+          "reference": "user_11",
+          "resource_id": "account_5762",
+          "shown_time": "24 Sep 2026 09:14 JST",
+          "status_text": "Silver",
+          "system": "account_service",
+          "user_ids": [
+            "user_11"
+          ]
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "haruka.s1838@zoho.com"
+          ],
+          "names": [
+            "Haruka Sato"
+          ],
+          "phones": [
+            "+81 90 7610 2507"
+          ],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_MESSAGE",
+          "reference": "CS-8538",
+          "resource_id": "support_9538",
+          "shown_time": "24 Sep",
+          "status_text": null,
+          "system": "support_platform",
+          "user_ids": [
+            "user_11"
+          ]
+        }
+      ],
+      "screen": "Northstar Shop Customer Operations console showing the customer profile and order history for Haruka Sato.",
+      "timeline": [
+        {
+          "resource_ids": [
+            "support_9538"
+          ],
+          "text": "Customer replied to CS-8538",
+          "when": "24 Sep"
+        },
+        {
+          "resource_ids": [
+            "support_9538"
+          ],
+          "text": "Support agent responded",
+          "when": "22 Sep"
+        },
+        {
+          "resource_ids": [],
+          "text": "Order ORD-20265762 delivered",
+          "when": "18 Sep"
+        },
+        {
+          "resource_ids": [],
+          "text": "Order ORD-20265518 returned",
+          "when": "03 Sep"
+        },
+        {
+          "resource_ids": [
+            "support_9538"
+          ],
+          "text": "support_9538 created",
+          "when": "28 Aug"
+        }
+      ]
+    },
+    "file": "evidence/images/account_admin_console_20260926.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "d5c32ca5b6e1a2b4bbe9f5d41835ef1fd5d4f7061dab9067a4f9f88cea3c1861",
+    "views": 3
+  },
+  "evidence_09": {
+    "extracted_at": "2026-10-24T20:02:45Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "g.silva76@gmail.com",
+          "g.silva76.jr@gmail.com"
+        ],
+        "names": [
+          "Gabriel Silva",
+          "Aditi Jain"
+        ],
+        "phones": [],
+        "resource_ids": [
+          "search_428",
+          "search_1874"
+        ],
+        "user_ids": [
+          "user_13",
+          "user_9842"
+        ]
+      },
+      "records": [
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "g.silva76@gmail.com"
+          ],
+          "names": [
+            "Gabriel Silva"
+          ],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SEARCH_INDEX_ENTRY",
+          "reference": "user_13",
+          "resource_id": "search_428",
+          "shown_time": "2026-09-01T05:58:21Z",
+          "status_text": null,
+          "system": "search_service",
+          "user_ids": [
+            "user_13"
+          ]
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "g.silva76.jr@gmail.com"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SEARCH_INDEX_ENTRY",
+          "reference": null,
+          "resource_id": "search_1874",
+          "shown_time": "05:55:03 UTC",
+          "status_text": null,
+          "system": "search_service",
+          "user_ids": []
+        }
+      ],
+      "screen": "Northstar Shop Search Console displaying customer search results and a raw document detail panel.",
+      "timeline": [
+        {
+          "resource_ids": [],
+          "text": "email:g.silva76@gmail.com · 2 hits",
+          "when": "06:00:14"
+        },
+        {
+          "resource_ids": [],
+          "text": "customer_reference:user_9842 · 1 hit",
+          "when": "05:42:03"
+        },
+        {
+          "resource_ids": [],
+          "text": "display_name:\"Aditi Jain\" · 1 hit",
+          "when": "05:31:18"
+        }
+      ]
+    },
+    "file": "evidence/images/search_index_inspector_20260901.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "75afdb0ae53a4510c83399a70d88073cb4fb2747454095756e4ddad1a8c70605",
+    "views": 3
+  },
+  "evidence_14": {
+    "extracted_at": "2026-10-24T20:04:01Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "jain.aditi@gmail.com",
+          "lucia-torres@gmail.com"
+        ],
+        "names": [
+          "Aditi Jain",
+          "Lucia Torres"
+        ],
+        "phones": [],
+        "resource_ids": [
+          "data_flow_1121",
+          "data_flow_9846"
+        ],
+        "user_ids": []
+      },
+      "records": [
+        {
+          "condition": "ACTIVE",
+          "emails": [
+            "jain.aditi@gmail.com"
+          ],
+          "names": [
+            "Aditi Jain"
+          ],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "DATA_FLOW",
+          "reference": null,
+          "resource_id": "data_flow_1121",
+          "shown_time": "07:59:42",
+          "status_text": "Healthy",
+          "system": "integration_service",
+          "user_ids": []
+        },
+        {
+          "condition": "ACTIVE",
+          "emails": [
+            "lucia-torres@gmail.com"
+          ],
+          "names": [
+            "Lucia Torres"
+          ],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "DATA_FLOW",
+          "reference": null,
+          "resource_id": "data_flow_9846",
+          "shown_time": "07:59:36",
+          "status_text": "Continuous",
+          "system": "integration_service",
+          "user_ids": []
+        },
+        {
+          "condition": "ACTIVE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "DATA_FLOW",
+          "reference": "Order notifications",
+          "resource_id": null,
+          "shown_time": "07:59:28",
+          "status_text": "Continuous",
+          "system": "integration_service",
+          "user_ids": []
+        },
+        {
+          "condition": "ACTIVE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "DATA_FLOW",
+          "reference": "Delivery tracking",
+          "resource_id": null,
+          "shown_time": "07:59:13",
+          "status_text": "Continuous",
+          "system": "integration_service",
+          "user_ids": []
+        }
+      ],
+      "screen": "Northstar Shop BridgeOps console displaying the Connections topology for data flows.",
+      "timeline": [
+        {
+          "resource_ids": [
+            "data_flow_1121"
+          ],
+          "text": "124 events delivered",
+          "when": "07:59:42"
+        },
+        {
+          "resource_ids": [
+            "data_flow_1121"
+          ],
+          "text": "checkpoint committed",
+          "when": "07:58:10"
+        },
+        {
+          "resource_ids": [
+            "data_flow_1121"
+          ],
+          "text": "18 events retried",
+          "when": "07:56:44"
+        },
+        {
+          "resource_ids": [
+            "data_flow_1121"
+          ],
+          "text": "destination acknowledged batch",
+          "when": "07:55:02"
+        }
+      ]
+    },
+    "file": "evidence/images/connector_management_console_20260807.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "e81fabc93ea1b5f4c918d934cdb2bea05d61737adfcc29f281494f5d8ec46355",
+    "views": 3
+  },
+  "evidence_19": {
+    "extracted_at": "2026-10-24T20:05:04Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "darwish.omar@icloud.com"
+        ],
+        "names": [
+          "Omar Darwish"
+        ],
+        "phones": [],
+        "resource_ids": [
+          "analytics_7438"
+        ],
+        "user_ids": [
+          "user_20"
+        ]
+      },
+      "records": [
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "darwish.omar@icloud.com"
+          ],
+          "names": [
+            "Omar Darwish"
+          ],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "ANALYTICS_PROFILE",
+          "reference": "user_20",
+          "resource_id": "analytics_7438",
+          "shown_time": "13 Jul 2026 14:22 UTC",
+          "status_text": "Last 90 days",
+          "system": "analytics_platform",
+          "user_ids": [
+            "user_20"
+          ]
+        }
+      ],
+      "screen": "Northstar Shop admin console showing the Pulse Analytics user profile for Omar Darwish.",
+      "timeline": [
+        {
+          "resource_ids": [],
+          "text": "Order completed",
+          "when": "14:22"
+        },
+        {
+          "resource_ids": [],
+          "text": "Checkout started",
+          "when": "14:20"
+        },
+        {
+          "resource_ids": [],
+          "text": "Product viewed",
+          "when": "14:17"
+        },
+        {
+          "resource_ids": [],
+          "text": "Added to cart",
+          "when": "14:16"
+        },
+        {
+          "resource_ids": [],
+          "text": "Product viewed",
+          "when": "14:12"
+        },
+        {
+          "resource_ids": [],
+          "text": "6 events in active session",
+          "when": "13 Jul"
+        },
+        {
+          "resource_ids": [],
+          "text": "Order completed · USD 83.21",
+          "when": "08 Jul"
+        },
+        {
+          "resource_ids": [],
+          "text": "Product search · coffee set",
+          "when": "30 Jun"
+        },
+        {
+          "resource_ids": [],
+          "text": "Campaign opened",
+          "when": "22 Jun"
+        }
+      ]
+    },
+    "file": "evidence/images/analytics_profile_view_20260713.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "4e4cb259bc2010b622b0c53fe5872258f994fefc23452a83bb27473758693484",
+    "views": 3
+  },
+  "evidence_23": {
+    "extracted_at": "2026-10-24T20:06:08Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "marcus.lee@northstar.shop",
+          "ingrid.dahl@outlook.com",
+          "sara.kim@northstar.shop",
+          "daniel.park@northstar.shop"
+        ],
+        "names": [],
+        "phones": [],
+        "resource_ids": [
+          "export_1261",
+          "export_1260",
+          "export_1259",
+          "export_1258"
+        ],
+        "user_ids": []
+      },
+      "records": [
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "marcus.lee@northstar.shop"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "USER_EXPORT",
+          "reference": "customer_export_1261.zip",
+          "resource_id": "export_1261",
+          "shown_time": "20 Jun 14:18 UTC",
+          "status_text": "Collecting",
+          "system": "export_service",
+          "user_ids": []
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "ingrid.dahl@outlook.com"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "USER_EXPORT",
+          "reference": "customer_export_1260.zip",
+          "resource_id": "export_1260",
+          "shown_time": "18 Jun 06:42 UTC",
+          "status_text": "Ready",
+          "system": "export_service",
+          "user_ids": []
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "sara.kim@northstar.shop"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "USER_EXPORT",
+          "reference": "customer_export_1259.zip",
+          "resource_id": "export_1259",
+          "shown_time": "17 Jun 11:03 UTC",
+          "status_text": "Packaging",
+          "system": "export_service",
+          "user_ids": []
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "daniel.park@northstar.shop"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "USER_EXPORT",
+          "reference": "customer_export_1258.zip",
+          "resource_id": "export_1258",
+          "shown_time": "16 Jun 09:27 UTC",
+          "status_text": "Ready",
+          "system": "export_service",
+          "user_ids": []
+        }
+      ],
+      "screen": "Northstar Shop Customer Download Center showing a list of data export jobs and details for a selected export.",
+      "timeline": [
+        {
+          "resource_ids": [
+            "export_1260"
+          ],
+          "text": "Ready for download",
+          "when": "06:46"
+        },
+        {
+          "resource_ids": [
+            "export_1260"
+          ],
+          "text": "Package created",
+          "when": "06:45"
+        },
+        {
+          "resource_ids": [
+            "export_1260"
+          ],
+          "text": "Collecting customer records",
+          "when": "06:43"
+        },
+        {
+          "resource_ids": [
+            "export_1260"
+          ],
+          "text": "Export requested",
+          "when": "06:42"
+        }
+      ]
+    },
+    "file": "evidence/images/customer_export_console_20260618.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "18b95c1bd8b8956e40216df935498a9f3c181ea2a69b5cd6d3c0841a816d5557",
+    "views": 3
+  },
+  "evidence_28": {
+    "extracted_at": "2026-10-24T20:15:33Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "kagayeman8947@fastmail.com"
+        ],
+        "names": [
+          "Kofi Agayeman",
+          "Maya Chen"
+        ],
+        "phones": [],
+        "resource_ids": [
+          "support_1034"
+        ],
+        "user_ids": []
+      },
+      "records": [
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "kagayeman8947@fastmail.com"
+          ],
+          "names": [
+            "Kofi Agayeman",
+            "Maya Chen"
+          ],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_MESSAGE",
+          "reference": "CS-5034",
+          "resource_id": "support_1034",
+          "shown_time": "Updated moments ago",
+          "status_text": "Normal priority",
+          "system": "support_platform",
+          "user_ids": []
+        }
+      ],
+      "screen": "Northstar Shop Helpline Console displaying a support ticket for a customer delivery inquiry.",
+      "timeline": [
+        {
+          "resource_ids": [],
+          "text": "Order confirmed",
+          "when": "22 May"
+        },
+        {
+          "resource_ids": [],
+          "text": "Dispatched",
+          "when": "23 May"
+        },
+        {
+          "resource_ids": [],
+          "text": "Reached regional hub",
+          "when": "24 May 07:46"
+        },
+        {
+          "resource_ids": [],
+          "text": "In transit",
+          "when": "24 May 08:15"
+        },
+        {
+          "resource_ids": [],
+          "text": "Delivery expected",
+          "when": "26 May"
+        }
+      ]
+    },
+    "file": "evidence/images/support_ticket_console_20260524.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "542b7aec17e6b2f38827896e7eb52c70e4bfaaca22433621be1f80f54884e944",
+    "views": 3
+  },
+  "evidence_32": {
+    "extracted_at": "2026-10-24T20:16:37Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "bluepeakco@outlook.com",
+          "miller.logistics@company.com",
+          "areed1433@gmail.com",
+          "summit-retail@company.co"
+        ],
+        "names": [],
+        "phones": [],
+        "resource_ids": [
+          "backup_9291",
+          "backup_9288",
+          "backup_9287",
+          "backup_9286"
+        ],
+        "user_ids": []
+      },
+      "records": [
+        {
+          "condition": "RESTORABLE",
+          "emails": [
+            "bluepeakco@outlook.com"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "BACKUP_ARCHIVE",
+          "reference": null,
+          "resource_id": "backup_9291",
+          "shown_time": "26 Apr 02:00",
+          "status_text": null,
+          "system": "backup_service",
+          "user_ids": []
+        },
+        {
+          "condition": "RESTORABLE",
+          "emails": [
+            "miller.logistics@company.com"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "BACKUP_ARCHIVE",
+          "reference": null,
+          "resource_id": "backup_9288",
+          "shown_time": "26 Apr 02:00",
+          "status_text": null,
+          "system": "backup_service",
+          "user_ids": []
+        },
+        {
+          "condition": "RESTORABLE",
+          "emails": [
+            "areed1433@gmail.com"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "BACKUP_ARCHIVE",
+          "reference": "s3://northstar-backups/customer-platform/weekly/segment-42-20260426.tar.zst",
+          "resource_id": "backup_9287",
+          "shown_time": "26 Apr 2026 02:00 UTC",
+          "status_text": "Verified",
+          "system": "backup_service",
+          "user_ids": []
+        },
+        {
+          "condition": "RESTORABLE",
+          "emails": [
+            "summit-retail@company.co"
+          ],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "BACKUP_ARCHIVE",
+          "reference": null,
+          "resource_id": "backup_9286",
+          "shown_time": "26 Apr 02:00",
+          "status_text": null,
+          "system": "backup_service",
+          "user_ids": []
+        }
+      ],
+      "screen": "Northstar Shop Vault Recovery Manager displaying Customer-platform archives and their backup details.",
+      "timeline": [
+        {
+          "resource_ids": [
+            "backup_9286"
+          ],
+          "text": "backup_9286 restored · Completed",
+          "when": "25 Apr"
+        },
+        {
+          "resource_ids": [
+            "backup_9281"
+          ],
+          "text": "backup_9281 restored · Completed",
+          "when": "24 Apr"
+        },
+        {
+          "resource_ids": [],
+          "text": "checksum verification · Completed",
+          "when": "22 Apr"
+        }
+      ]
+    },
+    "file": "evidence/images/backup_restore_console_20260429.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "2c246aa5843bec609b9ddfdf1154cd81e0fd61996f83954735e9856e48c18bf3",
+    "views": 3
+  },
+  "evidence_37": {
+    "extracted_at": "2026-10-24T20:10:17Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [],
+        "names": [],
+        "phones": [],
+        "resource_ids": [
+          "audit_record_003",
+          "audit_record_002",
+          "audit_record_001",
+          "audit_record_006",
+          "audit_record_005",
+          "audit_record_004"
+        ],
+        "user_ids": [
+          "user_03"
+        ]
+      },
+      "records": [
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SECURITY_AUDIT_LOG",
+          "reference": null,
+          "resource_id": "audit_record_003",
+          "shown_time": "25 Aug 04:03",
+          "status_text": "Valid",
+          "system": "security_service",
+          "user_ids": [
+            "user_03"
+          ]
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SECURITY_AUDIT_LOG",
+          "reference": null,
+          "resource_id": "audit_record_002",
+          "shown_time": "25 Aug 03:21",
+          "status_text": "Valid",
+          "system": "security_service",
+          "user_ids": [
+            "user_03"
+          ]
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SECURITY_AUDIT_LOG",
+          "reference": null,
+          "resource_id": "audit_record_001",
+          "shown_time": "24 Aug 16:14",
+          "status_text": "Valid",
+          "system": "security_service",
+          "user_ids": [
+            "user_03"
+          ]
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SECURITY_AUDIT_LOG",
+          "reference": null,
+          "resource_id": "audit_record_006",
+          "shown_time": "22 Aug 11:27",
+          "status_text": "Valid",
+          "system": "security_service",
+          "user_ids": [
+            "user_03"
+          ]
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SECURITY_AUDIT_LOG",
+          "reference": null,
+          "resource_id": "audit_record_005",
+          "shown_time": "20 Aug 09:42",
+          "status_text": "Valid",
+          "system": "security_service",
+          "user_ids": [
+            "user_03"
+          ]
+        },
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SECURITY_AUDIT_LOG",
+          "reference": null,
+          "resource_id": "audit_record_004",
+          "shown_time": "18 Aug 14:05",
+          "status_text": "Valid",
+          "system": "security_service",
+          "user_ids": [
+            "user_03"
+          ]
+        }
+      ],
+      "screen": "Northstar Shop admin console showing the Account events audit log for user_03.",
+      "timeline": [
+        {
+          "resource_ids": [
+            "audit_record_003"
+          ],
+          "text": "Account closure recorded",
+          "when": "25 Aug"
+        },
+        {
+          "resource_ids": [
+            "audit_record_002"
+          ],
+          "text": "Session revoked",
+          "when": "25 Aug"
+        },
+        {
+          "resource_ids": [
+            "audit_record_001"
+          ],
+          "text": "Recovery challenge completed",
+          "when": "24 Aug"
+        },
+        {
+          "resource_ids": [
+            "audit_record_006"
+          ],
+          "text": "Email change confirmed",
+          "when": "22 Aug"
+        }
+      ]
+    },
+    "file": "evidence/images/security_audit_explorer_20260905.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "ca59f693f4e7002466b3fdeaf1bb6763618770963dd811b60003772d07b4b03b",
+    "views": 3
+  },
+  "evidence_42": {
+    "extracted_at": "2026-10-24T20:12:20Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [],
+        "names": [],
+        "phones": [],
+        "resource_ids": [],
+        "user_ids": [
+          "user_17"
+        ]
+      },
+      "records": [
+        {
+          "condition": "ACTIVE",
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "unknown",
+          "reference": "user_17",
+          "resource_id": null,
+          "shown_time": "11 Jan 2024 08:42 UTC",
+          "status_text": "Active",
+          "system": "unknown",
+          "user_ids": [
+            "user_17"
+          ]
+        }
+      ],
+      "screen": "Northstar Shop Customer Reference Registry showing details for customer reference user_17.",
+      "timeline": [
+        {
+          "resource_ids": [],
+          "text": "Metadata reviewed",
+          "when": "10 Mar 2026"
+        },
+        {
+          "resource_ids": [],
+          "text": "Finance link added",
+          "when": "22 Aug 2024"
+        },
+        {
+          "resource_ids": [],
+          "text": "Support link added",
+          "when": "03 Jun 2024"
+        },
+        {
+          "resource_ids": [],
+          "text": "Support link added",
+          "when": "14 Feb 2024"
+        },
+        {
+          "resource_ids": [],
+          "text": "Reference created",
+          "when": "11 Jan 2024"
+        }
+      ]
+    },
+    "file": "evidence/images/deleted_account_reference_20260310.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "68c28a72afd6ed184d5990d15c543f8a516face204f0360f732755a8a63c28be",
+    "views": 3
+  },
+  "evidence_46": {
+    "extracted_at": "2026-10-24T20:13:23Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [],
+        "names": [],
+        "phones": [],
+        "resource_ids": [],
+        "user_ids": []
+      },
+      "records": [
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_ATTACHMENT",
+          "reference": "delivery_confirmation_19.pdf",
+          "resource_id": null,
+          "shown_time": "12 Feb 18:42",
+          "status_text": "v3",
+          "system": "object_storage",
+          "user_ids": []
+        },
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_ATTACHMENT",
+          "reference": "delivery_confirmation_20.pdf",
+          "resource_id": null,
+          "shown_time": "11 Feb 14:17",
+          "status_text": "v1",
+          "system": "object_storage",
+          "user_ids": []
+        },
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_ATTACHMENT",
+          "reference": "return_label_4821.pdf",
+          "resource_id": null,
+          "shown_time": "10 Feb 09:33",
+          "status_text": "v1",
+          "system": "object_storage",
+          "user_ids": []
+        },
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_ATTACHMENT",
+          "reference": "return_label_4876.pdf",
+          "resource_id": null,
+          "shown_time": "11 Feb 16:05",
+          "status_text": "v2",
+          "system": "object_storage",
+          "user_ids": []
+        },
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_ATTACHMENT",
+          "reference": "invoice_NS-10493.pdf",
+          "resource_id": null,
+          "shown_time": "10 Feb 11:21",
+          "status_text": "v1",
+          "system": "object_storage",
+          "user_ids": []
+        },
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "SUPPORT_ATTACHMENT",
+          "reference": "parcel_damage_7713.jpg",
+          "resource_id": null,
+          "shown_time": "12 Feb 10:08",
+          "status_text": "v1",
+          "system": "object_storage",
+          "user_ids": []
+        },
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "USER_EXPORT",
+          "reference": "customer_export_2026-02-10.zip",
+          "resource_id": null,
+          "shown_time": "10 Feb 23:14",
+          "status_text": "v1",
+          "system": "object_storage",
+          "user_ids": []
+        },
+        {
+          "condition": null,
+          "emails": [],
+          "names": [],
+          "phones": [],
+          "presence": "PRESENT",
+          "record_type": "USER_EXPORT",
+          "reference": "customer_export_2026-02-12.zip",
+          "resource_id": null,
+          "shown_time": "12 Feb 21:56",
+          "status_text": "v1",
+          "system": "object_storage",
+          "user_ids": []
+        }
+      ],
+      "screen": "Nimbus Object Storage console showing the northstar-customer-data bucket with a list of objects and a detail panel for a selected file.",
+      "timeline": [
+        {
+          "resource_ids": [],
+          "text": "v3 · metadata update",
+          "when": "12 Feb 18:42"
+        },
+        {
+          "resource_ids": [],
+          "text": "v2 · upload complete",
+          "when": "12 Feb 18:39"
+        },
+        {
+          "resource_ids": [],
+          "text": "v1 · object created",
+          "when": "12 Feb 18:38"
+        }
+      ]
+    },
+    "file": "evidence/images/object_storage_browser_20260213.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "96e9a191380c29b9e0ab997007268c4cd6353cb6721ebd1ed4a32599d8d37e04",
+    "views": 3
+  },
+  "evidence_60": {
+    "extracted_at": "2026-10-24T20:14:25Z",
+    "extraction": {
+      "page_identifiers": {
+        "emails": [
+          "sj.park@naver.com"
+        ],
+        "names": [
+          "Soo-jin Park"
+        ],
+        "phones": [
+          "+82 10-5837-9451"
+        ],
+        "resource_ids": [
+          "marketing_001"
+        ],
+        "user_ids": []
+      },
+      "records": [
+        {
+          "condition": "IDENTIFIABLE",
+          "emails": [
+            "sj.park@naver.com"
+          ],
+          "names": [
+            "Soo-jin Park"
+          ],
+          "phones": [
+            "+82 10-5837-9451"
+          ],
+          "presence": "PRESENT",
+          "record_type": "MARKETING_PROFILE",
+          "reference": null,
+          "resource_id": "marketing_001",
+          "shown_time": "15 Sep 2026 23:40 UTC",
+          "status_text": "Live",
+          "system": "marketing_platform",
+          "user_ids": []
+        }
+      ],
+      "screen": "Northstar Shop admin console showing the Audience Operations profile for a customer named Soo-jin Park.",
+      "timeline": [
+        {
+          "resource_ids": [
+            "marketing_001"
+          ],
+          "text": "Product-category update",
+          "when": "23:40"
+        },
+        {
+          "resource_ids": [
+            "marketing_001"
+          ],
+          "text": "Campaign eligibility check",
+          "when": "23:38"
+        },
+        {
+          "resource_ids": [
+            "marketing_001"
+          ],
+          "text": "Profile refresh",
+          "when": "23:35"
+        },
+        {
+          "resource_ids": [
+            "marketing_001"
+          ],
+          "text": "Audience evaluation",
+          "when": "23:32"
+        }
+      ]
+    },
+    "file": "evidence/images/marketing_profile_console.png",
+    "model": "qwen/qwen3.8-27b",
+    "provider": "groq",
+    "sha256": "51fa0e6a38f8fa3629ba1b0d0b90b4ed139715956b97bfd09a6f1a6232c15df5",
+    "views": 3
+  }
+}

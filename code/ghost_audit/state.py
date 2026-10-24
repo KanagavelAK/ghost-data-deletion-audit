@@ -80,8 +80,10 @@ def reconstruct(resource_id: str, system_id: str, history: list[Observation], st
                     state.condition = earlier[-1].condition
             state.pii_fields = set().union(*(o.pii_fields for o in present))
             state.identifiers = set().union(*(o.identifiers for o in present))
-        categories = [o.category for o in observations if o.category]
-        state.category = categories[-1] if categories else None
+        # A vision model's record-type guess yields to categories stated by structured evidence.
+        stated = [o.category for o in history if o.category and not o.source.startswith("image:") and o.observed_at <= audit_at]
+        guessed = [o.category for o in observations if o.category and o.source.startswith("image:")]
+        state.category = (stated or guessed or [None])[-1]
 
     # A later complete listing that omits the record proves it absent.
     for cov in absence_listings(resource_id, system_id, history, store, audit_at, case_files):

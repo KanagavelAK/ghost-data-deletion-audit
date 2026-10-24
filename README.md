@@ -31,7 +31,7 @@ The three differences are records that appear in none of the supplied data, so t
 deletion request
       │
       ▼
- ┌────────────────┐   multilingual rules, Claude fallback for undecided texts
+ ┌────────────────┐   multilingual rules, LLM fallback for undecided texts
  │ Intent         │──▶ not a deletion request ──▶ NOT_APPLICABLE, []
  └────────────────┘
       │
@@ -76,16 +76,25 @@ deletion request
 - **Repeat requesters.** Evidence from a person's earlier deletion request does not leak into a later one.
 - **Activity-only records.** Deleted accounts and anonymized analytics carry no identifiers; they are linked through the timing of the deletion workflow run that touched them, assigned globally so no record goes to two cases.
 - **Time cutoff.** Only evidence up to `audit_at` is used, and only files captured by then are cited.
+- **Catalog claims vs. content.** A data-catalog link is metadata; when the record itself shows a different person, it is not linked to the case.
+- **Unproven safety.** A backup or data flow that is present but shows no restore or sync state is treated as still able to recreate data.
 - **Policy nuances.** Support messages are redacted while attachments are deleted, account tombstones keep only the stable `user_id`, security audit records and legal holds are retained, and backups must have restores blocked.
 
 ### Where AI is used
 
-The core is deterministic so the output is reproducible and explainable. Claude is used where it adds the most:
+The core is deterministic so the output is reproducible and explainable. A language model is used only where it adds the most:
 
-- **Screenshot reading** – admin-console screenshots are read once with a vision model and cached (`code/extract_images.py`).
-- **Request intent** – multilingual rules decide clear cases; texts they cannot decide go to Claude in one batched, cached call, and `code/verify_intent.py` cross-checks every rule decision.
+- **Screenshot reading** – admin-console screenshots are read once with a vision model and cached (`code/extract_images.py`). Each request sends the full screen plus two zoomed halves so small IDs and phone numbers survive downscaling, and records shown only by a display reference (a file name, a customer key) are mapped back through the data catalog. `code/evaluation/verify_screenshots.py` checks every cached extraction against facts read from the images by hand.
+- **Request intent** – multilingual rules decide clear cases; texts they cannot decide go to the model in one batched, cached call, and `code/verify_intent.py` cross-checks every rule decision.
 
-Every model call is recorded with its token usage in `code/cache/llm_usage.jsonl`.
+The LLM layer is provider-pluggable (`code/ghost_audit/llm.py`):
+
+| Provider | Vision model | Text model | Select with |
+| --- | --- | --- | --- |
+| **Groq** (default, free tier available) | `qwen/qwen3.8-27b` | `openai/gpt-oss-20b` | `GHOST_LLM_PROVIDER=groq` |
+| Anthropic (optional) | `claude-sonnet-5-5` | `claude-haiku-5-5` | `GHOST_LLM_PROVIDER=anthropic` |
+
+Models can be overridden with `GHOST_VISION_MODEL` and `GHOST_TEXT_MODEL`. Calls retry on rate limits (honouring `retry-after`), and every call is recorded with its provider, model and token usage in `code/cache/llm_usage.jsonl`.
 
 ## Setup
 
@@ -104,11 +113,13 @@ git clone https://github.com/interviewstreet/hackerrank-orchestrate-october26.gi
 cp -r hackerrank-orchestrate-october26/dataset ./dataset
 ```
 
-Optional, for the AI steps: create `.env` in the project root (see `code/.env.example`):
+Optional, for the AI steps: create `.env` in the project root (see `code/.env.example`) with a free [Groq API key](https://console.groq.com/keys):
 
 ```text
-ANTHROPIC_API_KEY=your-key
+GROQ_API_KEY=your-key
 ```
+
+To use Anthropic instead, set `GHOST_LLM_PROVIDER=anthropic` and `ANTHROPIC_API_KEY`, and `pip install anthropic`.
 
 ## Usage
 
@@ -117,8 +128,9 @@ ANTHROPIC_API_KEY=your-key
 | `python code/main.py` | Audit all 518 evaluation requests and write `output.csv` |
 | `python code/main.py --split sample` | Audit the 32 sample requests into `runs/sample_predictions.csv` |
 | `python code/evaluation/main.py` | Solve the samples and score them (`runs/sample_score.md`, `runs/sample_diff.md`) |
-| `python code/extract_images.py` | Read the screenshots with Claude and cache the results |
-| `python code/verify_intent.py` | Cross-check every intent decision with Claude |
+| `python code/extract_images.py` | Read the screenshots with the vision model and cache the results |
+| `python code/evaluation/verify_screenshots.py` | Check cached screenshot extractions against hand-read facts |
+| `python code/verify_intent.py` | Cross-check every intent decision with the text model |
 | `python code/inspect_evidence.py --case case_17` | Show a case's identity, linked records and evidence |
 | `python code/inspect_evidence.py --resource account_005` | Show every observation of one record |
 | `python -m unittest discover -s code/tests` | Run the test suite |
@@ -166,6 +178,7 @@ code/
 │   ├── policy.py              deletion_rules.csv application
 │   ├── planner.py             status and ordered steps
 │   ├── solver.py              pipeline orchestration
+│   ├── llm.py, config.py      provider-pluggable LLM client (Groq / Anthropic) and settings
 │   ├── schema.py, output.py   output contract and serialization
 │   └── validate.py            contract validator
 ├── evaluation/

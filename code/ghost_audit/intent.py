@@ -1,8 +1,9 @@
 """Decide whether a request text authorizes deletion.
 
 Transparent rules decide the clear cases in several languages. Texts the rules
-cannot decide go to Claude in one batched, cached call; without an API key they
-fall back to "not a deletion request" and are flagged as low confidence.
+cannot decide go to the configured LLM (Groq by default) in one batched, cached
+call; without an API key they fall back to "not a deletion request" and are
+flagged as low confidence.
 """
 
 import hashlib
@@ -11,7 +12,7 @@ import re
 from dataclasses import dataclass
 
 from . import config, paths
-from .llm import LLMUnavailable, call_claude, extract_json
+from .llm import LLMUnavailable, call_llm, extract_json, text_block
 
 CACHE_PATH = paths.REPO_ROOT / "code" / "cache" / "intent_llm.json"
 
@@ -97,11 +98,12 @@ def _key(text: str) -> str:
 class IntentClassifier:
     """Rules first; undecided texts are sent to an LLM in batches and cached by text hash."""
 
-    def __init__(self, use_llm: bool = True, model: str | None = None, batch_size: int = 40, llm_call=None):
+    def __init__(self, use_llm: bool = True, model: str | None = None, provider: str | None = None, batch_size: int = 40, llm_call=None):
         self.use_llm = use_llm
-        self.model = model or config.intent_model()
+        self.provider = provider or config.llm_provider()
+        self.model = model or config.model_for(self.provider, "text")
         self.batch_size = batch_size
-        self._llm_call = llm_call or self._call_claude
+        self._llm_call = llm_call or self._call_model
         self.cache = json.loads(CACHE_PATH.read_text(encoding="utf-8")) if CACHE_PATH.exists() else {}
 
     def classify_all(self, texts: list[str]) -> dict[str, Intent]:
@@ -132,13 +134,21 @@ class IntentClassifier:
             except LLMUnavailable:
                 break
             for text, verdict in verdicts.items():
-                self.cache[_key(text)] = {**verdict, "model": self.model}
+                self.cache[_key(text)] = {**verdict, "provider": self.provider, "model": self.model}
             self._save()
         return {t: self.cache[_key(t)] for t in texts if _key(t) in self.cache}
 
-    def _call_claude(self, batch: list[str]) -> dict[str, dict]:
+    def _call_model(self, batch: list[str]) -> dict[str, dict]:
         listing = "\n".join(json.dumps({"id": i, "text": t}, ensure_ascii=False) for i, t in enumerate(batch))
-        reply = call_claude([{"type": "text", "text": LLM_PROMPT + listing}], purpose="intent_classification", model=self.model, max_tokens=60 * len(batch) + 200)
+        reply = call_llm(
+            [text_block(LLM_PROMPT + listing)],
+            purpose="intent_classification",
+            task="text",
+            provider=self.provider,
+            model=self.model,
+            max_tokens=60 * len(batch) + 200,
+            json_mode=True,
+        )
         out = {}
         for item in extract_json(reply).get("results", []):
             i = item.get("id")

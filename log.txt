@@ -194,3 +194,73 @@ branch=main
 repo_root=D:\HackerRank\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
+
+## [2026-10-24T19:52:53Z] Discuss Groq instead of the paid Anthropic API
+
+User Prompt (verbatim, secrets redacted):
+actually anthropic api key is a paid api, why don;t we use groq api ??
+this is just me suggestion 
+
+and why you suggested me anthropic api ??
+
+Agent Response Summary:
+Explained that Anthropic was a default choice rather than a requirement of the challenge, and that the project needs an LLM in only two places: request intent (the rules already decide all 398 texts, so zero calls) and a one-time, cached read of 11 screenshots that affects about 12 of 518 cases. Agreed Groq is a sensible free option via its OpenAI-compatible API, with the caveat that open vision models can misread exact IDs on dense screenshots, so each extraction should be checked against its image; also mentioned Gemini's free tier and local Ollama. Proposed making the LLM layer provider-pluggable with Groq as the default; no code changed this turn.
+
+Actions:
+* None besides this log entry (answer only)
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=main
+repo_root=D:\HackerRank\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+
+## [2026-10-24T19:58:37Z] Make the LLM layer provider-pluggable with Groq as default
+
+User Prompt (verbatim, secrets redacted):
+Yes, make the LLM layer provider-pluggable with Groq as the default (keep Anthropic optional), update requirements, .env.example and README. I'll add GROQ_API_KEY, then run the screenshot extraction and check every extraction against its image.
+
+Agent Response Summary:
+Checked Groq's live docs: the Llama 4 vision models are gone, the current vision model is qwen/qwen3.8-27b (JSON mode supported, 3 images per request), gpt-oss models serve text, Qwen reasoning must be hidden in JSON mode, and limits are tight (about 8K tokens per minute) with retry-after on 429s. Rewrote code/ghost_audit/llm.py as a provider-pluggable client (neutral text/image blocks, Groq and Anthropic adapters, reasoning kept out of JSON replies, retries honouring retry-after, usage ledger with provider and model) and config.py (GHOST_LLM_PROVIDER, per-provider default models, GHOST_VISION_MODEL / GHOST_TEXT_MODEL overrides); routed screenshot extraction and the intent fallback through it; updated the CLI scripts, requirements.txt (groq; anthropic optional), .env.example and README. Added 9 offline tests (38 total, all passing); pipeline output and sample scores unchanged. Screenshot extraction is waiting for the user's GROQ_API_KEY.
+
+Actions:
+* WebFetch: console.groq.com docs (vision, models, rate-limits, reasoning)
+* pip install groq (1.7.0) into .venv
+* Rewrote code/ghost_audit/{llm,config}.py; edited evidence/images.py, intent.py, extract_images.py, verify_intent.py, requirements.txt, .env.example, README.md; created code/tests/test_llm.py
+* Ran unittest (38 passed), main.py (0 errors), evaluation/main.py (unchanged), extract_images.py (stopped: no GROQ_API_KEY)
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=main
+repo_root=D:\HackerRank\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+
+## [2026-10-24T20:19:03Z] Groq key, screenshot extraction and verification
+
+User Prompt (verbatim, secrets redacted):
+[REDACTED]
+
+
+this is the groq api key 
+use this for the project
+
+Agent Response Summary:
+Stored the key only in the git-ignored .env. A one-image smoke test with qwen/qwen3.8-27b misread a phone number and treated order numbers as records, so extraction now sends the full screen plus two zoomed halves, accepts only real resource ids, uses the capture time, and maps screens that show only a display reference (user_17, delivery_confirmation_19.pdf, NST-2026-0718-1842) to their records through data-catalog aliases. Extracted all 11 screenshots under Groq's rate limits and wrote code/evaluation/verify_screenshots.py with hand-read facts for every image: 24 of 25 records exact after snapping one misread email to the only known email within two edits; the one remaining slip is a business email on an unrelated backup. Added rules that a catalog link is dropped when the record's own content shows someone else (marketing_001 shows Soo-jin Park, not the requester), that a present backup or flow with no visible state is a risk, and that model conditions must fit the record type; fixed an alias over-match in PDFs that briefly linked tombstone_17 to six sample cases. Samples are unchanged (100% status, 29/32 exact), exactly the 12 hand-built eval cases changed, and 43 tests pass.
+
+Actions:
+* Wrote .env (git-ignored); added --only to code/extract_images.py; pip install pillow
+* Updated code/ghost_audit/evidence/{images,catalog_links,documents,__init__}.py, context.py, state.py, policy.py, inspect_evidence.py, README.md
+* Created code/evaluation/verify_screenshots.py and code/tests/test_screenshots.py
+* Ran extract_images.py (11 screenshots, 14 Groq calls in total), verify_screenshots.py, main.py, evaluation/main.py, unittest (43 passed)
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=main
+repo_root=D:\HackerRank\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
