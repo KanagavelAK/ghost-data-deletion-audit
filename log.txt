@@ -152,3 +152,24 @@ branch=main
 repo_root=D:\HackerRank\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
+
+## [2026-10-24T19:47:43Z] Keep only project files in the GitHub repo; add project README
+
+User Prompt (verbatim, secrets redacted):
+in my repo, keep only the things are are related to the project (like model.py, csv files, readme file that explains the project, only the things related to the project don't keep the files that are cloned from the hackerrank repo)
+
+Agent Response Summary:
+Removed the HackerRank starter files (AGENTS.md, CLAUDE.md, agent_trace_instructions.md, problem_statement.md and the 103-file dataset/ folder) from version control while keeping them on disk and adding them to .gitignore, so the pipeline still runs locally. Replaced the challenge README with a project README covering purpose, sample results, pipeline design, AI usage, setup (including how to obtain the dataset), usage and structure. Committed as the user with no co-author trailer and pushed; GitHub now holds 39 project files and none from the starter repo, though the earlier starter-files commit is still in history.
+
+Actions:
+* git rm -r --cached on the starter files; appended them to .gitignore
+* Rewrote README.md; ran code/main.py (518 rows, 0 errors) to confirm the local pipeline still works
+* git commit and git push as Kanagavel; gh api checks of the remote tree and README
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=main
+repo_root=D:\HackerRank\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
