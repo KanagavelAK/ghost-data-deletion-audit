@@ -23,7 +23,9 @@ Local scorer on the 32 public sample cases:
 | Evidence citation accuracy | **98.7%** |
 | Account identity resolution | **96.9%** |
 
-The three differences are records that appear in none of the supplied data, so they cannot be derived. A full run over the 518 evaluation requests takes about 2 seconds and produces [`output.csv`](output.csv) with zero contract errors.
+The three differences are records that appear in none of the supplied data, so they cannot be derived. A full run over the 518 evaluation requests takes about 2 seconds and produces [`output.csv`](output.csv) with zero contract errors and makes no model calls.
+
+Also checked: 4 team-built evaluation cases with hand-derived answers (4/4 exact), the cached screenshot extractions against facts read from the images (24/25 exact), and every rule-based intent decision against an LLM (398/398 agree). Details are in [`code/evaluation/evaluation_report.md`](code/evaluation/evaluation_report.md); token usage and cost are in [`code/evaluation/usage_report.md`](code/evaluation/usage_report.md).
 
 ## How it works
 
@@ -129,7 +131,10 @@ To use Anthropic instead, set `GHOST_LLM_PROVIDER=anthropic` and `ANTHROPIC_API_
 | `python code/main.py --split sample` | Audit the 32 sample requests into `runs/sample_predictions.csv` |
 | `python code/evaluation/main.py` | Solve the samples and score them (`runs/sample_score.md`, `runs/sample_diff.md`) |
 | `python code/extract_images.py` | Read the screenshots with the vision model and cache the results |
+| `python code/evaluation/run_custom_cases.py` | Run the team-built evaluation cases against their hand-derived answers |
 | `python code/evaluation/verify_screenshots.py` | Check cached screenshot extractions against hand-read facts |
+| `python code/evaluation/usage_report.py` | Regenerate `usage_report.md` from the token-usage ledger |
+| `python code/package_submission.py` | Build `code.zip` and a secret-redacted `agent-trace.zip` |
 | `python code/verify_intent.py` | Cross-check every intent decision with the text model |
 | `python code/inspect_evidence.py --case case_17` | Show a case's identity, linked records and evidence |
 | `python code/inspect_evidence.py --resource account_005` | Show every observation of one record |
@@ -181,9 +186,16 @@ code/
 │   ├── llm.py, config.py      provider-pluggable LLM client (Groq / Anthropic) and settings
 │   ├── schema.py, output.py   output contract and serialization
 │   └── validate.py            contract validator
+├── package_submission.py      builds code.zip and a redacted agent-trace.zip
+├── cache/                     cached screenshot extractions and the token-usage ledger
 ├── evaluation/
 │   ├── main.py                local scorer CLI
-│   └── scorer.py              status, step, field, sequence, identity and evidence metrics
+│   ├── scorer.py              status, step, field, sequence, identity and evidence metrics
+│   ├── run_custom_cases.py    team-built cases (custom_cases/) against hand-derived answers
+│   ├── verify_screenshots.py  screenshot extractions against hand-read facts
+│   ├── usage_report.py        writes usage_report.md from the ledger
+│   ├── evaluation_report.md   accuracy, custom cases, failures found and improvements
+│   └── usage_report.md        model calls, tokens and cost
 └── tests/                     regression tests
 output.csv                     predictions for the 518 evaluation requests
 log.txt                        development session log

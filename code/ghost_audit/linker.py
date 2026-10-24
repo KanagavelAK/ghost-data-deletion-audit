@@ -26,6 +26,7 @@ from datetime import datetime, timedelta
 from .context import CaseContext, ResourceLink
 from .dataset import Activity, Dataset
 from .evidence import EvidenceStore
+from .identity import IdentityResolver
 
 CLAIM_TO_RESULT = {"COMPLETE": "SUCCESS", "PARTIALLY_COMPLETE": "PARTIAL", "NOT_STARTED": "FAILED"}
 ACCOUNT_BEFORE = timedelta(hours=2)
@@ -67,9 +68,11 @@ class AccountChoice:
 
 
 class ActivityLinker:
-    def __init__(self, dataset: Dataset, store: EvidenceStore):
+    def __init__(self, dataset: Dataset, store: EvidenceStore, resolver: IdentityResolver | None = None):
         self.dataset = dataset
         self.store = store
+        self.resolver = resolver or IdentityResolver(dataset)
+        self._account_people = None
         self.workflow = sorted((a for a in dataset.activities if a.source_system in WORKFLOW_SOURCES), key=lambda a: a.event_time)
         self.account_deletes = [a for a in self.workflow if a.event_type == "DELETE_RECORD" and a.target_system == "account_service"]
         self.by_resource = defaultdict(list)
@@ -95,6 +98,24 @@ class ActivityLinker:
             if a.source_system in WORKFLOW_SOURCES and lo <= a.event_time <= hi
         ]
 
+    def account_people(self) -> dict[str, set[str]]:
+        """account -> user ids any evidence ties it to, at any date.
+
+        Who owns an account does not change over time, so this is used only to rule
+        a candidate out for a different person, never to link records or decide state.
+        """
+        if self._account_people is None:
+            token_users = {}
+            for user_id, spans in self.resolver.spans_by_user.items():
+                for span in spans:
+                    token_users[span.token] = user_id
+            people = defaultdict(set)
+            for obs in self.store.observations:
+                if obs.resource_id.startswith("account_"):
+                    people[obs.resource_id] |= {token_users[t] for t in obs.all_identifiers if t in token_users}
+            self._account_people = dict(people)
+        return self._account_people
+
     def assign_accounts(self, contexts: dict[str, CaseContext]) -> dict[str, AccountChoice]:
         deletion = {cid: ctx for cid, ctx in contexts.items() if ctx.intent.authorizes_deletion}
         evidence_accounts = {cid: set(ctx.resources("account_service")) for cid, ctx in deletion.items()}
@@ -116,8 +137,13 @@ class ActivityLinker:
                 choices[cid] = AccountChoice(latest, "evidence")
             else:
                 wanted = CLAIM_TO_RESULT[ctx.request.reported_status]
-                # Accounts the evidence ties to another case are not available.
-                free = [a for a in candidates if not owners.get(a.resource_id)]
+                # Accounts the evidence ties to another case, or to another person at any time, are not available.
+                people = self.account_people()
+                free = [
+                    a
+                    for a in candidates
+                    if not owners.get(a.resource_id) and not (people.get(a.resource_id) and ctx.identity.user_id not in people[a.resource_id])
+                ]
                 matching = [a for a in free if a.reported_result == wanted]
                 options[cid] = matching or free
 

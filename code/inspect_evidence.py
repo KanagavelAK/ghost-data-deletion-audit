@@ -143,7 +143,7 @@ def show_case(case_id: str, store: EvidenceStore, dataset) -> int:
     for rid, link in sorted(ctx.links.items()):
         print(f"linked {link.system_id} {rid} via {sorted(link.via)}")
         show(ctx.history[rid])
-    for label, items in (("lookalike decoys", ctx.lookalikes), ("linked only after audit_at", ctx.later_only), ("linked only before window", ctx.earlier_only), ("catalog link contradicted by content", ctx.conflicting)):
+    for label, items in (("lookalike decoys", ctx.lookalikes), ("linked only after audit_at", ctx.later_only), ("linked only before window", ctx.earlier_only), ("catalog link contradicted by content", ctx.conflicting), ("catalog-linked but content shows unknown contacts", ctx.content_mismatch)):
         if items:
             print(f"{label}: {sorted(items)}")
     return 0

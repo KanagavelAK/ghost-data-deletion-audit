@@ -65,7 +65,8 @@ class CaseContext:
     intake_non_deletion: list[Activity]  # privacy-intake activities classifying a linked account as non-deletion
     window_start: datetime | None = None  # audit_at of the same person's previous request, if any
     earlier_only: set[str] = field(default_factory=set)  # linked only before window_start (diagnostic)
-    conflicting: set[str] = field(default_factory=set)  # catalog-linked records whose content names someone else
+    conflicting: set[str] = field(default_factory=set)  # catalog-linked records whose content shows another known customer
+    content_mismatch: set[str] = field(default_factory=set)  # catalog-linked records showing unknown contact details (kept)
 
     def resources(self, system_id: str | None = None) -> list[str]:
         return sorted(r for r, link in self.links.items() if system_id is None or link.system_id == system_id)
@@ -92,6 +93,7 @@ class ContextBuilder:
                 if target:
                     self.referenced_by[str(target)].add(obs.resource_id)
         self.evidence_emails = {t[6:] for t in store.by_identifier if t.startswith("email:")}
+        self.token_users = {span.token: user_id for user_id, spans in self.resolver.spans_by_user.items() for span in spans}
 
     def build(self, request: Request, intent: Intent) -> CaseContext:
         audit_at = request.audit_at
@@ -135,8 +137,10 @@ class ContextBuilder:
                 link = links.setdefault(other, ResourceLink(other, system_id))
                 link.via.add(f"ref:{resource_id}")
 
-        # A data-catalog link is metadata; if the record's own content names someone else, the content wins.
-        conflicts = set()
+        # A data-catalog link is metadata. If the record's own content shows a different known customer,
+        # the content wins and the record is not linked. Unknown contact details are only noted: they
+        # cannot prove the record belongs to someone else.
+        conflicts, mismatches = set(), set()
         for resource_id, link in list(links.items()):
             if not link.files or not all(f.startswith("activity_") for f in link.files):
                 continue
@@ -148,9 +152,14 @@ class ContextBuilder:
                 if t.startswith(("email:", "phone:", "user:"))
             }
             # A one- or two-character difference is a transcription slip, not a different person.
-            if shown and not any(near_match(t, mine) for t in shown for mine in tokens):
+            if not shown or any(near_match(t, mine) for t in shown for mine in tokens):
+                continue
+            others = {self.token_users[t] for t in shown if t in self.token_users} - {identity.user_id}
+            if others:
                 conflicts.add(resource_id)
                 del links[resource_id]
+            else:
+                mismatches.add(resource_id)
 
         history = {r: self.store.history(r, audit_at) for r in links}
         activities = {r: [a for a in self.activities_by_resource.get(r, ()) if a.event_time <= audit_at] for r in links}
@@ -173,6 +182,7 @@ class ContextBuilder:
             window_start=window_start,
             earlier_only=earlier - set(links),
             conflicting=conflicts,
+            content_mismatch=mismatches,
         )
 
     def _system_from_activity(self, resource_id: str) -> str:

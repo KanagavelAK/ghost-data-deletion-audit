@@ -39,27 +39,38 @@ class AliasTests(unittest.TestCase):
 
 
 class CatalogConflictTests(unittest.TestCase):
-    def test_record_showing_someone_else_is_not_linked(self):
-        dataset = load_dataset()
-        requests = {r.case_id: r for r in load_all_requests()}
-        request = requests["case_63"]  # kwame-mensah@proton.me
-        link_time = request.requested_at.replace(hour=7)
-        catalog = Observation(
-            "activity_4008", link_time, "marketing_platform", "marketing_001", UNKNOWN,
-            identifiers={"email:kwame-mensah@proton.me", "user:user_09"}, source="activity:LINK_RESOURCE_IDENTITY", captured_at=link_time,
+    @classmethod
+    def setUpClass(cls):
+        cls.dataset = load_dataset()
+        cls.requests = {r.case_id: r for r in load_all_requests()}
+        cls.request = cls.requests["case_63"]  # kwame-mensah@proton.me
+        cls.when = cls.request.requested_at.replace(hour=7)
+        cls.catalog = Observation(
+            "activity_4008", cls.when, "marketing_platform", "marketing_001", UNKNOWN,
+            identifiers={"email:kwame-mensah@proton.me", "user:user_09"}, source="activity:LINK_RESOURCE_IDENTITY", captured_at=cls.when,
         )
-        screen = Observation(
-            "evidence_60", link_time, "marketing_platform", "marketing_001", PRESENT,
-            identifiers={"email:sj.park@naver.com", "phone:821058379451"}, source="image:records[0]", captured_at=link_time,
-        )
-        store = EvidenceStore([catalog, screen], [], {}, [])
-        ctx = ContextBuilder(dataset, store, list(requests.values())).build(request, classify_intent(request.request_text))
+
+    def build(self, *observations):
+        builder = ContextBuilder(self.dataset, EvidenceStore([self.catalog, *observations], [], {}, []), list(self.requests.values()))
+        return builder.build(self.request, classify_intent(self.request.request_text))
+
+    def screen(self, *identifiers):
+        return Observation("evidence_60", self.when, "marketing_platform", "marketing_001", PRESENT, identifiers=set(identifiers), source="image:records[0]", captured_at=self.when)
+
+    def test_record_showing_another_known_customer_is_not_linked(self):
+        ctx = self.build(self.screen("email:s.yoon04@gmail.com"))  # user_25
         self.assertNotIn("marketing_001", ctx.links)
         self.assertIn("marketing_001", ctx.conflicting)
 
-        # Without the contradicting screen the catalog link stands.
-        ctx = ContextBuilder(dataset, EvidenceStore([catalog], [], {}, []), list(requests.values())).build(request, classify_intent(request.request_text))
+    def test_unknown_contact_details_do_not_disown_the_record(self):
+        ctx = self.build(self.screen("email:sj.park@naver.com", "phone:821058379451"))
         self.assertIn("marketing_001", ctx.links)
+        self.assertIn("marketing_001", ctx.content_mismatch)
+
+    def test_transcription_slip_of_the_subjects_email_is_not_a_conflict(self):
+        ctx = self.build(self.screen("email:kwame-mensa@proton.me"))
+        self.assertIn("marketing_001", ctx.links)
+        self.assertFalse(ctx.conflicting | ctx.content_mismatch)
 
 
 class UnprovenSafetyStateTests(unittest.TestCase):

@@ -1,0 +1,5 @@
+case_id,email,requested_at,reported_status,reported_at,audit_at,request_text
+custom_01,minjun.kim90@gmail.com,2026-08-24T12:00:00Z,COMPLETE,2026-08-25T12:00:00Z,2026-09-15T12:00:00Z,Please delete my account and every record linked to my old address.
+custom_02,KEIKO.NAKAMURA@GMAIL.COM,2026-09-01T12:00:00Z,COMPLETE,2026-09-02T12:00:00Z,2026-09-15T12:00:00Z,Bitte löschen Sie mein Konto und alle damit verbundenen personenbezogenen Daten endgültig.
+custom_03,amara-okeke@proton.me,2026-09-04T12:00:00Z,COMPLETE,2026-09-05T12:00:00Z,2026-09-15T12:00:00Z,"Quiero una copia de los datos de mi cuenta. Por favor no borren nada, sigo usando el servicio."
+custom_04,haruka.s1838@zoho.com,2026-09-14T08:00:00Z,COMPLETE,2026-09-16T08:00:00Z,2026-09-20T13:00:00Z,"Please erase my account and anything that still identifies me, including old contact details."
